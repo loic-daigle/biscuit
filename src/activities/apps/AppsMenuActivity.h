@@ -9,14 +9,16 @@ struct RadarHomeStatus;
 
 class AppsMenuActivity final : public Activity {
  public:
-  explicit AppsMenuActivity(GfxRenderer& renderer, MappedInputManager& mappedInput)
-      : Activity("AppsMenu", renderer, mappedInput) {}
+  explicit AppsMenuActivity(GfxRenderer& renderer, MappedInputManager& mappedInput, bool cleanInitialRefresh = false)
+      : Activity("AppsMenu", renderer, mappedInput), cleanInitialRefresh(cleanInitialRefresh) {}
 
   void onEnter() override;
   void loop() override;
   void render(RenderLock&&) override;
 
  private:
+  const bool cleanInitialRefresh;
+  bool firstRenderDone = false;
   int selectorIndex = 0;
   static constexpr int ITEM_COUNT = 8;
   static constexpr int COLS = 2;

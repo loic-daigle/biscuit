@@ -754,7 +754,10 @@ void AppsMenuActivity::render(RenderLock&&) {
     RadarHomeRenderer::draw(renderer, kRadarNodes, selectorIndex, status);
     const auto labels = mappedInput.mapLabels("", tr(STR_SELECT), "<", ">");
     GUI.drawButtonHints(renderer, labels.btn1, labels.btn2, labels.btn3, labels.btn4);
-    renderer.displayBuffer();
+    renderer.displayBuffer(cleanInitialRefresh && !firstRenderDone ? HalDisplay::HALF_REFRESH : HalDisplay::FAST_REFRESH);
+    if (!firstRenderDone) {
+      firstRenderDone = true;
+    }
     return;
   }
 
@@ -788,7 +791,10 @@ void AppsMenuActivity::render(RenderLock&&) {
   const auto labels = mappedInput.mapLabels(tr(STR_BACK), tr(STR_SELECT), "<", ">");
   GUI.drawButtonHints(renderer, labels.btn1, labels.btn2, labels.btn3, labels.btn4);
 
-  renderer.displayBuffer();
+  renderer.displayBuffer(cleanInitialRefresh && !firstRenderDone ? HalDisplay::HALF_REFRESH : HalDisplay::FAST_REFRESH);
+  if (!firstRenderDone) {
+    firstRenderDone = true;
+  }
 }
 
 void AppsMenuActivity::refreshSystemInfo() {
