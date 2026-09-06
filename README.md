@@ -12,7 +12,7 @@ Panda treats the Xteink X4/X3 as a general-purpose smart device, not just an e-r
 
 The e-ink display is readable in direct sunlight, retains its image without power, and gives the device days of battery life. Seven physical buttons provide navigation without a touchscreen. WiFi and BLE 5.0 enable wireless tools. A MicroSD card stores everything.
 
-Reader engine: EPUB 2/3 rendering with embedded-style option, image handling, hyphenation, kerning, chapter navigation, footnotes, bookmarks, dictionary lookups ([StarDict](docs/dictionary.md)), go-to-percent, auto page turn, orientation control, focus reading, KOReader progress sync, and native handling for `.epub`, `.xtc/.xtch`, `.txt`, and `.bmp`.
+Reader engine: EPUB 2/3 rendering with embedded-style option, image handling, hyphenation, kerning, adaptive table layouts, native CJK ruby annotations, chapter navigation, footnotes, bookmarks, dictionary lookups ([StarDict](docs/dictionary.md)), go-to-percent, auto page turn, orientation control, focus reading, KOReader progress sync, and native handling for `.epub`, `.xtc/.xtch`, `.txt`, and `.bmp`.
 
 ## Hardware
 
@@ -294,12 +294,14 @@ Three UI themes, selectable in Settings:
 ## Customization
 
 - **Themes**: Classic, Lyra, Lyra Extended, Military, Noir, Radar, RoundedRaff.
-- Sleep screen modes, front/side button remapping, status bar controls, power-button behavior, refresh cadence, and more.
-- **Localization**: 24 UI languages and counting. RTL support.
+- Night mode, sleep screen modes including transparent overlays, front/side button remapping, status bar controls, power-button behavior, refresh cadence, and more.
+- **Localization**: 34 UI languages and counting, including CJK font fallback and RTL support.
 
 ### Coming soon
 
 - More themes.
+- Web plugins.
+- Bluetooth pageturner.
 - Much more! stay tuned.
 
 ---
@@ -352,13 +354,17 @@ pip install esptool
 log stream --predicate 'subsystem == "com.apple.iokit"' --info
 ```
 
-5. Flash:
+5. Flash an X3 or X4:
 
 ```bash
 esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
 ```
 
-Adjust `/dev/ttyACM0` to match your system.
+   Flash an Xteink X4Pro, Seeed reTerminal Sticky, or M5PaperMono:
+
+```bash
+esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
+```
 
 ### Manual
 
@@ -399,7 +405,7 @@ Conversion runs the firmware repo's `lib/EpdFont/scripts/fontconvert_sdcard.py` 
 
 ### Prerequisites
 
-- [pioarduino](https://github.com/pioarduino/pioarduino) or VS Code + pioarduino plugin
+- [pioarduino PlatformIO Core](https://github.com/pioarduino/platformio-core) or [VS Code + pioarduino IDE](https://github.com/pioarduino/pioarduino-vscode-ide)
 - Python 3.8+
 - `clang-format` 22
 - USB-C cable supporting data transfer
@@ -552,17 +558,13 @@ Everyone here is a volunteer, so please be respectful and patient. For governanc
 
 One of the best things about open source is that anyone can take the code in a different direction. Panda itself is one such fork — if you need something outside Panda's or CrossPoint's [scope](./SCOPE.md), check out the community forks:
 
-- [CrossInk](https://github.com/uxjulia/CrossInk) — Typography and reading tracking: Bionic Reading (bolds word stems to create fixation points), guide dots between words, improved paragraph indents, and replaces the default fonts with ChareInk/Lexend/Bitter.
+- [CrossInk](https://github.com/uxjulia/CrossInk) — UX focused with minimal reading stats and broader customizations for the reading experience.
 
-- [papyrix-reader](https://github.com/bigbag/papyrix-reader) — Adds FB2 and MD format support. Actively maintained with Arabic script support. Custom themes via SD card.
-
-- ~~[crosspet](https://github.com/trilwu/crosspet) — A Vietnamese fork that adds a Tamagotchi-style virtual chicken that grows based on your reading milestones (pages read, streaks, care). Also: Flashcards, Weather, Pomodoro timer, and mini-games.~~ (Unmaintained)
-
-- [crosspoint-reader-cjk](https://github.com/aBER0724/crosspoint-reader-cjk) — Purpose-built for Chinese, Japanese, and Korean reading.
+- [papyrix-reader](https://github.com/bigbag/papyrix-reader) — Adds FB2 and MD format support. Actively maintained with Arabic script support. Custom themes.
 
 - [inx](https://github.com/obijuankenobiii/inx) — Completely reimagines the user interface with tabbed navigation.
 
-- ~~[PlusPoint](https://github.com/ngxson/pluspoint-reader) — custom JS apps support.~~ (Unmaintained)
+- [Witch(hunt) Reader](https://github.com/jpirnay/witchhunt-reader) — More faithful CSS styling and background work for slightly snappier interaction. Weather information panel. Markdown support.
 
 - [crosspoint-reader-papers3](https://github.com/juicecultus/crosspoint-reader-papers3) — Crosspoint port for M5Stack Paper S3.
 
@@ -570,7 +572,7 @@ One of the best things about open source is that anyone can take the code in a d
 
 **Note:** Many CrossPoint fork features will make their way into Panda over time as we sync upstream.
 
-Want to build your own device? Be sure to check out the [de-link](https://github.com/iandchasse/de-link) project.
+Want to build your own device? Be sure to check out the [de-link](https://github.com/iandchasse/de-link) project or [OnePage Reader](https://github.com/MoveCall/onepage-reader).
 
 ---
 
